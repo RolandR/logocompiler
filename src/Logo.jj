@@ -197,6 +197,7 @@ String statement():
 {
 	String s = "";
 	String param;
+	String condition;
 	ArrayList<String> params = new ArrayList<String>();
 	String paramString = "";
 	String statements = "";
@@ -226,13 +227,13 @@ String statement():
 				s += statements;
 				s += "}";
 			}
-		|<IF> param = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
-				s = "if("+param+"){";
+		|<IF> condition = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+				s = "if("+condition+"){";
 				s += statements;
 				s += "}";
 			}
-		|<IFELSE> param = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> <LBRA> (param = statement() {elseStatements += "\t" + param + "\n";})* <RBRA> {
-				s = "if("+param+"){";
+		|<IFELSE> condition = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> <LBRA> (param = statement() {elseStatements += "\t" + param + "\n";})* <RBRA> {
+				s = "if("+condition+"){";
 				s += statements;
 				s += "} else {";
 				s += elseStatements;
