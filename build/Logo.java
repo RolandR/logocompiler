@@ -56,13 +56,13 @@ public class Logo implements LogoConstants {
     javaFile = new File(t.image.toLowerCase() + ".java");
     pw = new PrintWriter(new FileOutputStream(javaFile));
     pw.println("import java.awt.Graphics;\u005cn");
-    pw.println("import java.util.ArrayList;\u005cn");
+    pw.println("import java.util.Stack;\u005cn");
     pw.println("public class " + t.image.toLowerCase() +
                " extends java.applet.Applet {\u005cn" );
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\u005cn");
-    pw.println("private ArrayList<Integer> repcount = new ArrayList<Integer>();\u005cn"); // for nested repeats, we'll use an arrayList of repcounts which acts like a LIFO Stack
+    pw.println("private Stack<Integer> repcount = new Stack<Integer>();\u005cn"); // for nested repeats, we'll use an arrayList of repcounts which acts like a LIFO Stack
 
       label_1:
       while (true) {
@@ -217,10 +217,10 @@ s = "l.wait("+param+");";
 statements += "\u005ct" + param + "\u005cn";
         }
         jj_consume_token(RBRA);
-s = "for(repcount.add(0); repcount.get(repcount.size()-1) <= ("+count+"); repcount.set(repcount.size()-1, repcount.get(repcount.size()-1)+1)){\u005cn"; // wow, that is quite ugly...
+s = "for(repcount.push(0); repcount.peek() <= ("+count+"); repcount.push(repcount.pop() + 1)){\u005cn"; // wow, that is quite ugly...
                                 s += statements;
                                 s += "}\u005cn";
-                                s += "repcount.remove(repcount.size()-1);";
+                                s += "repcount.pop();";
       } else if (jj_2_21(2)) {
         jj_consume_token(IF);
         condition = bExpr();
@@ -394,7 +394,7 @@ factor += "("+e+")";
 if(t == null){
 
                 } else if(t.image == "REPCOUNT"){
-                        factor += "repcount.get(repcount.size()-1)";
+                        factor += "repcount.peek()";
                 } else {
                         factor += t.image;
                 }
