@@ -123,7 +123,7 @@ numIndent--;
           break label_3;
         }
         p = jj_consume_token(PARAMETER);
-params.add("int "+p.image);
+params.add("double "+p.image);
       }
       label_4:
       while (true) {

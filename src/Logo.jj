@@ -173,7 +173,7 @@ String subroutine():
 	(
 		<SUBROUTINE>
 		identifier = <IDENTIFIER>
-		(p = <PARAMETER> {params.add("int "+p.image);})*
+		(p = <PARAMETER> {params.add("double "+p.image);})*
 		(statement = statement() {statements += "\t" + statement + "\n";})*
 		<END>
 	)
