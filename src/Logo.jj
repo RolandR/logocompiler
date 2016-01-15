@@ -119,6 +119,7 @@ void start() throws IOException:
     pw.println("private Stack<Integer> repcount = new Stack<Integer>();\n"); // for nested repeats, we'll use a stack for repcount
   }
 
+	// Process all subroutines
    (sub = subroutine()
 		{
 			indent();
@@ -134,7 +135,8 @@ void start() throws IOException:
      pw.println("l = new LogoPrimitives(this);");
      pw.println();
    }
-   
+
+	// Process all statements
 	(stat = statement()
 		{
 		   indent();
@@ -184,7 +186,7 @@ String subroutine():
 		for(i = 0; i < params.size(); i++){
 			paramString += params.get(i);
 			if(i != params.size() - 1){
-				paramString += ", ";
+				paramString += ", "; // There must be no comma after the last parameter
 			}
 		}
 		sub = "private void "+identifier+"("+paramString+"){\n";
