@@ -56,12 +56,14 @@ public class Logo implements LogoConstants {
     javaFile = new File(t.image.toLowerCase() + ".java");
     pw = new PrintWriter(new FileOutputStream(javaFile));
     pw.println("import java.awt.Graphics;\u005cn");
+    pw.println("import java.util.ArrayList;\u005cn");
     pw.println("public class " + t.image.toLowerCase() +
                " extends java.applet.Applet {\u005cn" );
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\u005cn");
-    pw.println("private int repcount;\u005cn");
+    pw.println("private ArrayList<Integer> repcount = new ArrayList<Integer>();\u005cn"); // for nested repeats, we'll use an arrayList of repcounts which acts like a LIFO Stack
+
       label_1:
       while (true) {
         if (jj_2_1(2)) {
@@ -215,9 +217,10 @@ s = "l.wait("+param+");";
 statements += "\u005ct" + param + "\u005cn";
         }
         jj_consume_token(RBRA);
-s = "for(repcount = 0; repcount <= ("+count+"); repcount++){\u005cn";
+s = "for(repcount.add(0); repcount.get(repcount.size()-1) <= ("+count+"); repcount.set(repcount.size()-1, repcount.get(repcount.size()-1)+1)){\u005cn"; // wow, that is quite ugly...
                                 s += statements;
-                                s += "}";
+                                s += "}\u005cn";
+                                s += "repcount.remove(repcount.size()-1);";
       } else if (jj_2_21(2)) {
         jj_consume_token(IF);
         condition = bExpr();
@@ -391,7 +394,7 @@ factor += "("+e+")";
 if(t == null){
 
                 } else if(t.image == "REPCOUNT"){
-                        factor += "repcount";
+                        factor += "repcount.get(repcount.size()-1)";
                 } else {
                         factor += t.image;
                 }
@@ -867,17 +870,6 @@ factor += comp.image + expr;
     finally { jj_save(45, xla); }
   }
 
-  static private boolean jj_3R_18()
- {
-    if (jj_3R_19()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_27()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   static private boolean jj_3_6()
  {
     if (jj_3R_15()) return true;
@@ -1064,16 +1056,16 @@ factor += comp.image + expr;
     return false;
   }
 
+  static private boolean jj_3_32()
+ {
+    if (jj_scan_token(REPCOUNT)) return true;
+    return false;
+  }
+
   static private boolean jj_3_17()
  {
     if (jj_scan_token(LEFTTURN)) return true;
     if (jj_3R_16()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_32()
- {
-    if (jj_scan_token(REPCOUNT)) return true;
     return false;
   }
 
@@ -1098,15 +1090,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_14()
- {
-    if (jj_scan_token(SHOWTURTLE)) return true;
-    return false;
-  }
-
   static private boolean jj_3_41()
  {
     if (jj_scan_token(LE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_14()
+ {
+    if (jj_scan_token(SHOWTURTLE)) return true;
     return false;
   }
 
@@ -1122,15 +1114,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_11()
- {
-    if (jj_scan_token(PENDOWN)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_20()
  {
     if (jj_3R_21()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_11()
+ {
+    if (jj_scan_token(PENDOWN)) return true;
     return false;
   }
 
@@ -1152,15 +1144,21 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_1()
- {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_17()
  {
     if (jj_3R_20()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_40()
+ {
+    if (jj_scan_token(GT)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -1208,12 +1206,6 @@ factor += comp.image + expr;
     }
     }
     }
-    return false;
-  }
-
-  static private boolean jj_3_40()
- {
-    if (jj_scan_token(GT)) return true;
     return false;
   }
 
@@ -1272,13 +1264,13 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_4()
+  static private boolean jj_3_7()
  {
     if (jj_3R_15()) return true;
     return false;
   }
 
-  static private boolean jj_3_7()
+  static private boolean jj_3_4()
  {
     if (jj_3R_15()) return true;
     return false;
@@ -1311,6 +1303,17 @@ factor += comp.image + expr;
     if (jj_3_26()) return true;
     }
     if (jj_3R_18()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_18()
+ {
+    if (jj_3R_19()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_27()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 

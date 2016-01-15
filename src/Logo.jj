@@ -109,12 +109,13 @@ void start() throws IOException:
     javaFile = new File(t.image.toLowerCase() + ".java");
     pw = new PrintWriter(new FileOutputStream(javaFile));
     pw.println("import java.awt.Graphics;\n");
+    pw.println("import java.util.ArrayList;\n");
     pw.println("public class " + t.image.toLowerCase() +
                " extends java.applet.Applet {\n" );
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\n");
-    pw.println("private int repcount;\n");
+    pw.println("private ArrayList<Integer> repcount = new ArrayList<Integer>();\n"); // for nested repeats, we'll use an arrayList of repcounts which acts like a LIFO Stack
   }
 
    (sub = subroutine()
@@ -222,10 +223,11 @@ String statement():
 		|<WAIT> param = nExpr() {s = "l.wait("+param+");";}
 		// More complex statements
 		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
-				
-				s = "for(repcount = 0; repcount <= ("+count+"); repcount++){\n";
+
+				s = "for(repcount.add(0); repcount.get(repcount.size()-1) <= ("+count+"); repcount.set(repcount.size()-1, repcount.get(repcount.size()-1)+1)){\n"; // wow, that is quite ugly...
 				s += statements;
-				s += "}";
+				s += "}\n";
+				s += "repcount.remove(repcount.size()-1);";
 			}
 		|<IF> condition = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
 				s = "if("+condition+"){";
@@ -287,7 +289,7 @@ String nFactor():
 		if(t == null){
 			
 		} else if(t.image == "REPCOUNT"){
-			factor += "repcount";
+			factor += "repcount.get(repcount.size()-1)";
 		} else {
 			factor += t.image;
 		}
