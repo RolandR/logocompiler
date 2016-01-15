@@ -2,6 +2,7 @@
 
 LOGO TEST
 
+  ST
   REPEAT 5 [
     FD 5
     RT REPCOUNT

@@ -11,6 +11,7 @@ private Stack<Integer> repcount = new Stack<Integer>();
    public void paint(Graphics g) {
       l = new LogoPrimitives(this);
 
+      l.st();
       for(repcount.push(0); repcount.peek() <= (5); repcount.push(repcount.pop() + 1)){
 	l.fd(5);
 	l.lt(repcount.peek());
