@@ -126,7 +126,7 @@ void start() throws IOException:
      pw.println();
    }
    
-   /*( statement())**/
+   ( statement() )*
    
    // close the method "paint"
    {
@@ -152,14 +152,106 @@ void subroutine():
 	<SUBROUTINE>
 	i = <IDENTIFIER>
 	(<PARAMETER>)*
-	(<STATEMENT>)*
+	(statement())*
 	<END>
 }
 
-/*void statement():
+void statement():
 {
 	
 }
 {
+	(
+		// Simple Statements
+		 <CLEARSCREEN>
+		|<PENDOWN>
+		|<PENUP>
+		|<HIDETURTLE>
+		|<SHOWTURTLE>
+		// Statements with one parameter
+		|<FORWARD> nExpr()
+		|<BACKWARD> nExpr()
+		|<LEFTTURN> nExpr()
+		|<RIGHTTURN> nExpr()
+		|<WAIT> nExpr()
+		// More complex statements
+		|<REPEAT> nExpr() <LBRA> (statement())* <RBRA>
+		|<IF> bExpr() <LBRA> (statement())* <RBRA>
+		|<IFELSE> bExpr() <LBRA> (statement())* <RBRA> <LBRA> (statement())* <RBRA>
+		|<IDENTIFIER> (nExpr())*
+	)
+}
+
+void nExpr():
+{
+
+}
+{
+	nTerm() ((<ADD> | <SUB>) nTerm())*
+}
+
+void nTerm():
+{
+
+}
+{
+	nFactor() ((<MUL> | <DIV>) nFactor())*
+}
+
+void nFactor():
+{
+
+}
+{
+	(<SUB>)? (<NUM> | <REPCOUNT> | <PARAMETER> | <LPAR> nExpr() <RPAR>)
+}
+
+void bExpr():
+{
 	
-}*/
+}
+{
+	bTerm() (<OR> bTerm())*
+}
+
+void bTerm():
+{
+
+}
+{
+	bFactor() (<AND> bFactor())*
+}
+
+void bFactor():
+{
+
+}
+{
+	(
+		 <TRUE>
+		|<FALSE>
+		|<NOT> <LPAR> bExpr() <RPAR>
+		|nExpr() (<EQ> | <NE> | <LT> | <GT> | <LE> | <GE>) nExpr()
+	)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
