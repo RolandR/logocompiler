@@ -85,7 +85,10 @@ TOKEN: { <PARAMETER: <PARSEP> <IDENTIFIER> > // removes parameter separator
           { matchedToken.image=image.substring(1,image.length()); } }
 
 void start() throws IOException:
-{ Token t; }
+{
+	Token t;
+	String p;
+}
 {
   // logo programs start with LOGO followed by an identifier
   <LOGO>  t = <IDENTIFIER>
@@ -110,27 +113,53 @@ void start() throws IOException:
     numIndent++;
     indent();
     pw.println("private LogoPrimitives logo;\n");
-    pw.flush();
   }
-  // ( subroutine() )*
-  // // Open the necessary method "paint" of the applet
-  // {
-  //   indent(); numIndent++;
-  //   pw.println("public void paint(Graphics g) {");
-  //   indent();
-  //   pw.println("logo = new LogoPrimitives(this);");
-  //   pw.println();
-  // }
-  // ( statement() )*
-  // // close the method "paint"
-  // {
-  //    numIndent--;
-  //    indent();
-  //    pw.println("}");
-  // }
-  // close the class
+  
+   ( subroutine() )*
+   // Open the necessary method "paint" of the applet
+   
+   {
+     indent(); numIndent++;
+     pw.println("public void paint(Graphics g) {");
+     indent();
+     pw.println("logo = new LogoPrimitives(this);");
+     pw.println();
+   }
+   
+   /*( statement())**/
+   
+   // close the method "paint"
+   {
+      numIndent--;
+      indent();
+      pw.println("}");
+   }
+   //close the class
+	{
+	  pw.flush();
+	}
+  
   <END>                 { numIndent--; indent();
                           pw.println("}");
                           pw.flush(); pw.close(); }
 }
 
+void subroutine():
+{
+	Token i;
+}
+{
+	<SUBROUTINE>
+	i = <IDENTIFIER>
+	(<PARAMETER>)*
+	(<STATEMENT>)*
+	<END>
+}
+
+/*void statement():
+{
+	
+}
+{
+	
+}*/
