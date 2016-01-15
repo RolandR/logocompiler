@@ -195,26 +195,40 @@ String nExpr():
 
 String nTerm():
 {
-	
+	String term;
+	Token sign;
+	String factor;
 }
 {
-	nFactor() ((<MUL> | <DIV>) nFactor())*
+	term = nFactor() ((sign = <MUL> | sign = <DIV>) factor = nFactor() {term += sign.image + factor;})*
+	{return term;}
 }
 
 String nFactor():
 {
-	
+	String factor = "";
+	String e;
+	Token t = null;
 }
 {
-	(<SUB>)? (<NUM> | <REPCOUNT> | <PARAMETER> | <LPAR> nExpr() <RPAR>)
+	(<SUB> {factor += "-";})? (t = <NUM> | t = <REPCOUNT> | t = <PARAMETER> | <LPAR> e = nExpr() <RPAR> {factor += "("+e+")";})
+	{
+		if(t != null){
+			factor += t.image;
+		}
+		return factor;
+	}
 }
 
 String bExpr():
 {
-	
+	String expr;
+	String term;
+	Token comp;
 }
 {
-	bTerm() (<OR> bTerm())*
+	expr = bTerm() (comp = <OR> term = bTerm() {expr += comp.image + term;})*
+	{return expr;}
 }
 
 String bTerm():
