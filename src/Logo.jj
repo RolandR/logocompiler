@@ -219,10 +219,13 @@ String bExpr():
 
 String bTerm():
 {
-
+	String term;
+	String factor;
+	Token comp;
 }
 {
-	bFactor() (<AND> bFactor())*
+	term = bFactor() (comp = <AND> factor = bFactor() {term += comp.image + factor;} )*
+	{return term;}
 }
 
 String bFactor():
