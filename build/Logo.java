@@ -38,7 +38,8 @@ public class Logo implements LogoConstants {
   static final public void start() throws ParseException, IOException {
     trace_call("start");
     try {Token t;
-        String s;
+        String sub;
+        String stat;
       jj_consume_token(LOGO);
       t = jj_consume_token(IDENTIFIER);
 // Create the HTML file for the applet
@@ -68,9 +69,9 @@ public class Logo implements LogoConstants {
         } else {
           break label_1;
         }
-        s = subroutine();
+        sub = subroutine();
 indent();
-                        pw.println(s);
+                        pw.println(sub);
       }
 indent(); numIndent++;
      pw.println("public void paint(Graphics g) {");
@@ -84,9 +85,9 @@ indent(); numIndent++;
         } else {
           break label_2;
         }
-        s = statement();
+        stat = statement();
 indent();
-                   pw.println(s);
+                   pw.println(stat);
       }
 numIndent--;
       indent();
@@ -110,7 +111,7 @@ numIndent--;
         String paramString = "";
         String statement;
         String statements = "";
-        String s;
+        String sub;
         int i;
       jj_consume_token(SUBROUTINE);
       identifier = jj_consume_token(IDENTIFIER);
@@ -141,11 +142,11 @@ for(i = 0; i < params.size(); i++){
                                 paramString += ", ";
                         }
                 }
-                s = "private void "+identifier+"("+paramString+"){\u005cn";
-                s += statements;
-                s += "}\u005cn";
+                sub = "private void "+identifier+"("+paramString+"){\u005cn";
+                sub += statements;
+                sub += "}\u005cn";
 
-                {if ("" != null) return s;}
+                {if ("" != null) return sub;}
     throw new Error("Missing return statement in function");
     } finally {
       trace_return("subroutine");
@@ -861,36 +862,6 @@ factor += comp.image + expr;
     finally { jj_save(45, xla); }
   }
 
-  static private boolean jj_3_25()
- {
-    if (jj_scan_token(ADD)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_7()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_24()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_25()) {
-    jj_scanpos = xsp;
-    if (jj_3_26()) return true;
-    }
-    if (jj_3R_18()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_4()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_18()
  {
     if (jj_3R_19()) return true;
@@ -905,12 +876,6 @@ factor += comp.image + expr;
   static private boolean jj_3_38()
  {
     if (jj_scan_token(NE)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_3()
- {
-    if (jj_scan_token(PARAMETER)) return true;
     return false;
   }
 
@@ -1050,15 +1015,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_2()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
   static private boolean jj_3_42()
  {
     if (jj_scan_token(GE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2()
+ {
+    if (jj_3R_15()) return true;
     return false;
   }
 
@@ -1100,16 +1065,16 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_32()
- {
-    if (jj_scan_token(REPCOUNT)) return true;
-    return false;
-  }
-
   static private boolean jj_3_17()
  {
     if (jj_scan_token(LEFTTURN)) return true;
     if (jj_3R_16()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_32()
+ {
+    if (jj_scan_token(REPCOUNT)) return true;
     return false;
   }
 
@@ -1182,15 +1147,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_1()
- {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
   static private boolean jj_3_29()
  {
     if (jj_scan_token(DIV)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -1305,6 +1270,42 @@ factor += comp.image + expr;
     }
     }
     }
+    return false;
+  }
+
+  static private boolean jj_3_4()
+ {
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_3()
+ {
+    if (jj_scan_token(PARAMETER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_25()
+ {
+    if (jj_scan_token(ADD)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_7()
+ {
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_24()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_25()) {
+    jj_scanpos = xsp;
+    if (jj_3_26()) return true;
+    }
+    if (jj_3R_18()) return true;
     return false;
   }
 

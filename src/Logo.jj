@@ -87,7 +87,8 @@ TOKEN: { <PARAMETER: <PARSEP> <IDENTIFIER> > // removes parameter separator
 void start() throws IOException:
 {
 	Token t;
-	String s;
+	String sub;
+	String stat;
 }
 {
   // logo programs start with LOGO followed by an identifier
@@ -116,10 +117,10 @@ void start() throws IOException:
     pw.println("private int i;\n");
   }
 
-   (s = subroutine()
+   (sub = subroutine()
 		{
 			indent();
-			pw.println(s);
+			pw.println(sub);
 		}
 	)*
 
@@ -132,10 +133,10 @@ void start() throws IOException:
      pw.println();
    }
    
-	(s = statement()
+	(stat = statement()
 		{
 		   indent();
-		   pw.println(s);
+		   pw.println(stat);
 		}
 	)*
    
@@ -165,15 +166,17 @@ String subroutine():
 	String paramString = "";
 	String statement;
 	String statements = "";
-	String s;
+	String sub;
 	int i;
 }
 {
-	<SUBROUTINE>
-	identifier = <IDENTIFIER>
-	(p = <PARAMETER> {params.add("int "+p.image);})*
-	(statement = statement() {statements += "\t" + statement + "\n";})*
-	<END>
+	(
+		<SUBROUTINE>
+		identifier = <IDENTIFIER>
+		(p = <PARAMETER> {params.add("int "+p.image);})*
+		(statement = statement() {statements += "\t" + statement + "\n";})*
+		<END>
+	)
 
 	{
 		for(i = 0; i < params.size(); i++){
@@ -182,11 +185,11 @@ String subroutine():
 				paramString += ", ";
 			}
 		}
-		s = "private void "+identifier+"("+paramString+"){\n";
-		s += statements;
-		s += "}\n";
+		sub = "private void "+identifier+"("+paramString+"){\n";
+		sub += statements;
+		sub += "}\n";
 
-		return s;
+		return sub;
 	}
 }
 
