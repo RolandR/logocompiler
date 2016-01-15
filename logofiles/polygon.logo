@@ -7,5 +7,8 @@ LOGO POLYGON
       REPEAT :SIDES [FD 50 RT 360/:SIDES]
    END
 
+   RT 30
+   LT 30
+	
    POLY 5
 END

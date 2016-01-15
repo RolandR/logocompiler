@@ -113,11 +113,17 @@ void start() throws IOException:
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\n");
+    pw.println("private int i;\n");
   }
-  
-   ( subroutine() )*
-   // Open the necessary method "paint" of the applet
-   
+
+   (s = subroutine()
+		{
+			indent();
+			pw.println(s);
+		}
+	)*
+
+	 // Open the necessary method "paint" of the applet
    {
      indent(); numIndent++;
      pw.println("public void paint(Graphics g) {");
@@ -126,10 +132,12 @@ void start() throws IOException:
      pw.println();
    }
    
-   (s = statement() {
-	   indent();
-	   pw.println(s);
-	})*
+	(s = statement()
+		{
+		   indent();
+		   pw.println(s);
+		}
+	)*
    
    // close the method "paint"
    {
@@ -138,34 +146,61 @@ void start() throws IOException:
       pw.println("}");
    }
    //close the class
-	{
-	  pw.flush();
-	}
   
-  <END>                 { numIndent--; indent();
-                          pw.println("}");
-                          pw.flush(); pw.close(); }
+	<END>
+		{
+			numIndent--;
+			indent();
+			pw.println("}");
+			pw.flush();
+			pw.close();
+		}
 }
 
-void subroutine():
+String subroutine():
 {
-	Token i;
+	Token identifier;
+	Token p;
+	ArrayList<String> params = new ArrayList<String>();
+	String paramString = "";
+	String statement;
+	String statements = "";
+	String s;
+	int i;
 }
 {
 	<SUBROUTINE>
-	i = <IDENTIFIER>
-	(<PARAMETER>)*
-	(statement())*
+	identifier = <IDENTIFIER>
+	(p = <PARAMETER> {params.add("int "+p.image);})*
+	(statement = statement() {statements += "\t" + statement + "\n";})*
 	<END>
+
+	{
+		for(i = 0; i < params.size(); i++){
+			paramString += params.get(i);
+			if(i != params.size() - 1){
+				paramString += ", ";
+			}
+		}
+		s = "private void "+identifier+"("+paramString+"){\n";
+		s += statements;
+		s += "}\n";
+
+		return s;
+	}
 }
 
 String statement():
 {
 	String s = "";
-	String param = "";
+	String param;
+	ArrayList<String> params = new ArrayList<String>();
+	String paramString = "";
 	String statements = "";
+	String elseStatements = "";
 	Token t;
 	String count;
+	int i;
 }
 {
 	(
@@ -183,13 +218,33 @@ String statement():
 		|<WAIT> param = nExpr() {s = "l.wait("+param+");";}
 		// More complex statements
 		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+				
 				s = "for(int i = 0; i <= ("+count+"); i++){\n";
 				s += statements;
 				s += "}";
 			}
-		|<IF> bExpr() <LBRA> (statement())* <RBRA>
-		|<IFELSE> bExpr() <LBRA> (statement())* <RBRA> <LBRA> (statement())* <RBRA>
-		|<IDENTIFIER> (nExpr())*
+		|<IF> param = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+				s = "if("+param+"){";
+				s += statements;
+				s += "}";
+			}
+		|<IFELSE> param = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> <LBRA> (param = statement() {elseStatements += "\t" + param + "\n";})* <RBRA> {
+				s = "if("+param+"){";
+				s += statements;
+				s += "} else {";
+				s += elseStatements;
+				s += "}";
+			}
+		|t=<IDENTIFIER> (param = nExpr() {params.add(param);})* {
+					s = t.image + "(";
+					for(i = 0; i < params.size(); i++){
+						paramString += params.get(i);
+						if(i != params.size() - 1){
+							paramString += ", ";
+						}
+					}
+					s += paramString + ");";
+				}
 	)
 	{return s;}
 }
