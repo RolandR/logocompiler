@@ -115,6 +115,7 @@ void start() throws IOException:
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\n");
+    indent();
     pw.println("private Stack<Integer> repcount = new Stack<Integer>();\n"); // for nested repeats, we'll use a stack for repcount
   }
 
@@ -175,7 +176,7 @@ String subroutine():
 		<SUBROUTINE>
 		identifier = <IDENTIFIER>
 		(p = <PARAMETER> {params.add("double "+p.image);})*
-		(statement = statement() {statements += "\t" + statement + "\n";})*
+		(statement = statement() {statements += "   " + statement + "\n";})*
 		<END>
 	)
 
@@ -222,19 +223,19 @@ String statement():
 		|<RIGHTTURN> param = nExpr() {s = "l.lt("+param+");";}
 		|<WAIT> param = nExpr() {s = "l.wait("+param+");";}
 		// More complex statements
-		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "   " + param + "\n";})* <RBRA> {
 
 				s = "for(repcount.push(0); repcount.peek() <= ("+count+"); repcount.push(repcount.pop() + 1)){\n";
 				s += statements;
 				s += "}\n";
 				s += "repcount.pop();";
 			}
-		|<IF> condition = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+		|<IF> condition = bExpr() <LBRA> (param = statement() {statements += "   " + param + "\n";})* <RBRA> {
 				s = "if("+condition+"){";
 				s += statements;
 				s += "}";
 			}
-		|<IFELSE> condition = bExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> <LBRA> (param = statement() {elseStatements += "\t" + param + "\n";})* <RBRA> {
+		|<IFELSE> condition = bExpr() <LBRA> (param = statement() {statements += "   " + param + "\n";})* <RBRA> <LBRA> (param = statement() {elseStatements += "   " + param + "\n";})* <RBRA> {
 				s = "if("+condition+"){";
 				s += statements;
 				s += "} else {";
