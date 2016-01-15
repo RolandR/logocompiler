@@ -114,7 +114,7 @@ void start() throws IOException:
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\n");
-    pw.println("private int i;\n");
+    pw.println("private int repcount;\n");
   }
 
    (sub = subroutine()
@@ -222,7 +222,7 @@ String statement():
 		// More complex statements
 		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
 				
-				s = "for(int i = 0; i <= ("+count+"); i++){\n";
+				s = "for(repcount = 0; repcount <= ("+count+"); repcount++){\n";
 				s += statements;
 				s += "}";
 			}
@@ -283,7 +283,11 @@ String nFactor():
 {
 	(<SUB> {factor += "-";})? (t = <NUM> | t = <REPCOUNT> | t = <PARAMETER> | <LPAR> e = nExpr() <RPAR> {factor += "("+e+")";})
 	{
-		if(t != null){
+		if(t == null){
+			
+		} else if(t.image == "REPCOUNT"){
+			factor += "repcount";
+		} else {
 			factor += t.image;
 		}
 		return factor;

@@ -61,7 +61,7 @@ public class Logo implements LogoConstants {
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\u005cn");
-    pw.println("private int i;\u005cn");
+    pw.println("private int repcount;\u005cn");
       label_1:
       while (true) {
         if (jj_2_1(2)) {
@@ -214,7 +214,7 @@ s = "l.wait("+param+");";
 statements += "\u005ct" + param + "\u005cn";
         }
         jj_consume_token(RBRA);
-s = "for(int i = 0; i <= ("+count+"); i++){\u005cn";
+s = "for(repcount = 0; repcount <= ("+count+"); repcount++){\u005cn";
                                 s += statements;
                                 s += "}";
       } else if (jj_2_21(2)) {
@@ -387,7 +387,11 @@ factor += "("+e+")";
         jj_consume_token(-1);
         throw new ParseException();
       }
-if(t != null){
+if(t == null){
+
+                } else if(t.image == "REPCOUNT"){
+                        factor += "repcount";
+                } else {
                         factor += t.image;
                 }
                 {if ("" != null) return factor;}
@@ -873,12 +877,6 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_38()
- {
-    if (jj_scan_token(NE)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_14()
  {
     if (jj_scan_token(SUBROUTINE)) return true;
@@ -904,6 +902,12 @@ factor += comp.image + expr;
     return false;
   }
 
+  static private boolean jj_3_37()
+ {
+    if (jj_scan_token(EQ)) return true;
+    return false;
+  }
+
   static private boolean jj_3_34()
  {
     if (jj_scan_token(LPAR)) return true;
@@ -922,12 +926,6 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_37()
- {
-    if (jj_scan_token(EQ)) return true;
-    return false;
-  }
-
   static private boolean jj_3_8()
  {
     if (jj_3R_15()) return true;
@@ -942,19 +940,6 @@ factor += comp.image + expr;
       xsp = jj_scanpos;
       if (jj_3_9()) { jj_scanpos = xsp; break; }
     }
-    return false;
-  }
-
-  static private boolean jj_3_33()
- {
-    if (jj_scan_token(PARAMETER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_22()
- {
-    if (jj_scan_token(IFELSE)) return true;
-    if (jj_3R_17()) return true;
     return false;
   }
 
@@ -982,6 +967,12 @@ factor += comp.image + expr;
     return false;
   }
 
+  static private boolean jj_3_33()
+ {
+    if (jj_scan_token(PARAMETER)) return true;
+    return false;
+  }
+
   static private boolean jj_3_45()
  {
     if (jj_scan_token(NOT)) return true;
@@ -995,16 +986,16 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_43()
+  static private boolean jj_3_22()
  {
-    if (jj_scan_token(TRUE)) return true;
+    if (jj_scan_token(IFELSE)) return true;
+    if (jj_3R_17()) return true;
     return false;
   }
 
-  static private boolean jj_3_21()
+  static private boolean jj_3_43()
  {
-    if (jj_scan_token(IF)) return true;
-    if (jj_3R_17()) return true;
+    if (jj_scan_token(TRUE)) return true;
     return false;
   }
 
@@ -1015,9 +1006,33 @@ factor += comp.image + expr;
     return false;
   }
 
+  static private boolean jj_3_21()
+ {
+    if (jj_scan_token(IF)) return true;
+    if (jj_3R_17()) return true;
+    return false;
+  }
+
   static private boolean jj_3_42()
  {
     if (jj_scan_token(GE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_21()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_43()) {
+    jj_scanpos = xsp;
+    if (jj_3_44()) {
+    jj_scanpos = xsp;
+    if (jj_3_45()) {
+    jj_scanpos = xsp;
+    if (jj_3_46()) return true;
+    }
+    }
+    }
     return false;
   }
 
@@ -1048,23 +1063,6 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3R_21()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_43()) {
-    jj_scanpos = xsp;
-    if (jj_3_44()) {
-    jj_scanpos = xsp;
-    if (jj_3_45()) {
-    jj_scanpos = xsp;
-    if (jj_3_46()) return true;
-    }
-    }
-    }
-    return false;
-  }
-
   static private boolean jj_3_17()
  {
     if (jj_scan_token(LEFTTURN)) return true;
@@ -1092,9 +1090,22 @@ factor += comp.image + expr;
     return false;
   }
 
+  static private boolean jj_3_35()
+ {
+    if (jj_scan_token(OR)) return true;
+    if (jj_3R_20()) return true;
+    return false;
+  }
+
   static private boolean jj_3_14()
  {
     if (jj_scan_token(SHOWTURTLE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_41()
+ {
+    if (jj_scan_token(LE)) return true;
     return false;
   }
 
@@ -1116,28 +1127,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_35()
+  static private boolean jj_3R_20()
  {
-    if (jj_scan_token(OR)) return true;
-    if (jj_3R_20()) return true;
+    if (jj_3R_21()) return true;
     return false;
   }
 
   static private boolean jj_3_10()
  {
     if (jj_scan_token(CLEARSCREEN)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_41()
- {
-    if (jj_scan_token(LE)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_20()
- {
-    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -1156,6 +1154,12 @@ factor += comp.image + expr;
   static private boolean jj_3_1()
  {
     if (jj_3R_14()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_17()
+ {
+    if (jj_3R_20()) return true;
     return false;
   }
 
@@ -1206,21 +1210,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_26()
- {
-    if (jj_scan_token(SUB)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_17()
- {
-    if (jj_3R_20()) return true;
-    return false;
-  }
-
   static private boolean jj_3_40()
  {
     if (jj_scan_token(GT)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_26()
+ {
+    if (jj_scan_token(SUB)) return true;
     return false;
   }
 
@@ -1282,6 +1280,12 @@ factor += comp.image + expr;
   static private boolean jj_3_3()
  {
     if (jj_scan_token(PARAMETER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_38()
+ {
+    if (jj_scan_token(NE)) return true;
     return false;
   }
 
