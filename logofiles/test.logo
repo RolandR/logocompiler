@@ -1,0 +1,23 @@
+# Test stuff and things
+
+LOGO TEST
+
+  REPEAT 5 [
+    FD 5
+    RT REPCOUNT
+    WAIT 20
+	REPEAT 5 [
+		FD 5
+		RT REPCOUNT
+		WAIT 20
+		REPEAT 5 [
+			REPEAT 5 [
+				FD 5
+				RT REPCOUNT
+				WAIT 20
+			]
+		]
+	]
+  ]
+
+END
