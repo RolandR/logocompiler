@@ -19,10 +19,12 @@ public class LogoPrimitives {
                    showturtle=false;  // pen is down and no turtle
    private Graphics h;                // copy of current Graphics object, avoids
                                       // to give it as parameter all the time
+   private Graphics t;                // graphics layer for turtle
 
    public LogoPrimitives (Applet applet) {
       this.applet = applet;
       h = applet.getGraphics();
+      t = h.create();
       this.sizeX = applet.getSize().width;
       this.sizeY = applet.getSize().height;
       x = sizeX / 2;                  // default values
@@ -47,13 +49,13 @@ public class LogoPrimitives {
          showturtle = false;
          pd();
          rt(90);
-         fd(10);
+         tfd(10);
          lt(120);
-         fd(20);
+         tfd(20);
          lt(120);
-         fd(20);
+         tfd(20);
          lt(120);
-         fd(10);
+         tfd(10);
          lt(90);
          pendown = pen;               // restores pen state
          showturtle = turtle;
@@ -63,9 +65,7 @@ public class LogoPrimitives {
    // Erase Turtle
    private void et() {
       if (showturtle) {
-        h.setColor(Color.white);
-        dt();
-        h.setColor(Color.black);
+		t.clearRect(0,0,(int)sizeX,(int)sizeY);
       }
    }
 
@@ -102,6 +102,15 @@ public class LogoPrimitives {
       x = x1;
       y = y1;
       if (showturtle) dt();
+   }
+   
+   // Forward
+   public void tfd(double d) { 
+      x1 = x + d * Math.cos(radian(orient));
+      y1 = y + d * Math.sin(radian(orient));
+      t.drawLine((int)x,(int)y,(int)x1,(int)y1);
+      x = x1;
+      y = y1;
    }
 
    // Backward

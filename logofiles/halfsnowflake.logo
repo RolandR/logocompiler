@@ -16,12 +16,13 @@ LOGO HALFSNOWFLAKE
       RECFIG (:N-1) (:SIZE/3)
       LT 60
       RECFIG (:N-1) (:SIZE/3)
+      WAIT 2
     ]
   END
 
   # we assume that the origin is in the middle of
   # the drawing area (500x500)
-  HT
+  ST
   PU      # move bottom left corner
   BK 200  
   RT 90

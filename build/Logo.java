@@ -62,7 +62,7 @@ public class Logo implements LogoConstants {
     numIndent++;
     indent();
     pw.println("private LogoPrimitives l;\u005cn");
-    pw.println("private Stack<Integer> repcount = new Stack<Integer>();\u005cn"); // for nested repeats, we'll use an arrayList of repcounts which acts like a LIFO Stack
+    pw.println("private Stack<Integer> repcount = new Stack<Integer>();\u005cn"); // for nested repeats, we'll use a stack for repcount
 
       label_1:
       while (true) {
@@ -217,7 +217,7 @@ s = "l.wait("+param+");";
 statements += "\u005ct" + param + "\u005cn";
         }
         jj_consume_token(RBRA);
-s = "for(repcount.push(0); repcount.peek() <= ("+count+"); repcount.push(repcount.pop() + 1)){\u005cn"; // wow, that is quite ugly...
+s = "for(repcount.push(0); repcount.peek() <= ("+count+"); repcount.push(repcount.pop() + 1)){\u005cn";
                                 s += statements;
                                 s += "}\u005cn";
                                 s += "repcount.pop();";

@@ -2,6 +2,7 @@
 
 LOGO DEMO
 
+  ST
   # demo 0
   REPEAT 3 [FD 100 RT 120 WAIT 750]
 
