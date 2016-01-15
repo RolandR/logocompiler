@@ -4,7 +4,7 @@
 // Parser and translator of a subset of Logo into Java
 
 options {
-   LOOKAHEAD = 1;
+   LOOKAHEAD = 2;
    FORCE_LA_CHECK = true;
    DEBUG_PARSER = true;
    DEBUG_TOKEN_MANAGER = true;
@@ -182,31 +182,34 @@ void statement():
 	)
 }
 
-void nExpr():
+String nExpr():
 {
-
+	String exp;
+	String term;
 }
 {
-	nTerm() ((<ADD> | <SUB>) nTerm())*
+	exp = nTerm() ((<ADD> {exp += " + ";} | <SUB> {exp += " - ";}) term = nTerm() {exp += term;})*
+	
+	{return exp + " ";}
 }
 
-void nTerm():
+String nTerm():
 {
-
+	
 }
 {
 	nFactor() ((<MUL> | <DIV>) nFactor())*
 }
 
-void nFactor():
+String nFactor():
 {
-
+	
 }
 {
 	(<SUB>)? (<NUM> | <REPCOUNT> | <PARAMETER> | <LPAR> nExpr() <RPAR>)
 }
 
-void bExpr():
+String bExpr():
 {
 	
 }
@@ -214,7 +217,7 @@ void bExpr():
 	bTerm() (<OR> bTerm())*
 }
 
-void bTerm():
+String bTerm():
 {
 
 }
@@ -222,17 +225,22 @@ void bTerm():
 	bFactor() (<AND> bFactor())*
 }
 
-void bFactor():
+String bFactor():
 {
-
+	String factor = "";
+	String expr;
+	Token comp;
+	Token literal;
 }
 {
 	(
-		 <TRUE>
-		|<FALSE>
-		|<NOT> <LPAR> bExpr() <RPAR>
-		|nExpr() (<EQ> | <NE> | <LT> | <GT> | <LE> | <GE>) nExpr()
+		 literal = <TRUE> {return literal.image;}
+		|literal = <FALSE> {return literal.image;}
+		|<NOT> <LPAR> expr = bExpr() <RPAR> {factor = "!("+expr+")";}
+		|factor = nExpr() (comp = <EQ> | comp = <NE>| comp = <LT> | comp = <GT> | comp = <LE> | comp = <GE>) expr = nExpr() {factor += comp.image + expr;}
 	)
+	
+	{return factor;}
 }
 
 
