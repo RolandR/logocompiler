@@ -82,7 +82,8 @@ indent(); numIndent++;
           break label_2;
         }
         s = statement();
-pw.println("logo."+s);
+indent();
+           pw.println("logo."+s);
       }
 numIndent--;
       indent();
@@ -803,24 +804,6 @@ factor += comp.image + expr;
     finally { jj_save(45, xla); }
   }
 
-  static private boolean jj_3_14()
- {
-    if (jj_scan_token(SHOWTURTLE)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_13()
- {
-    if (jj_scan_token(HIDETURTLE)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_12()
- {
-    if (jj_scan_token(PENUP)) return true;
-    return false;
-  }
-
   static private boolean jj_3_11()
  {
     if (jj_scan_token(PENDOWN)) return true;
@@ -1057,15 +1040,15 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_2()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
   static private boolean jj_3_39()
  {
     if (jj_scan_token(LT)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2()
+ {
+    if (jj_3R_15()) return true;
     return false;
   }
 
@@ -1106,12 +1089,6 @@ factor += comp.image + expr;
     return false;
   }
 
-  static private boolean jj_3_1()
- {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
   static private boolean jj_3_6()
  {
     if (jj_3R_15()) return true;
@@ -1133,6 +1110,12 @@ factor += comp.image + expr;
     if (jj_3_26()) return true;
     }
     if (jj_3R_18()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -1247,6 +1230,24 @@ factor += comp.image + expr;
  {
     if (jj_scan_token(FORWARD)) return true;
     if (jj_3R_16()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_14()
+ {
+    if (jj_scan_token(SHOWTURTLE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_13()
+ {
+    if (jj_scan_token(HIDETURTLE)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_12()
+ {
+    if (jj_scan_token(PENUP)) return true;
     return false;
   }
 
