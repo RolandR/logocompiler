@@ -212,8 +212,8 @@ String statement():
 		 <CLEARSCREEN> {s = "l.cs();";}
 		|<PENDOWN> {s = "l.pd();";}
 		|<PENUP> {s = "l.pu();";}
-		|<HIDETURTLE> {s = "l.et();";}
-		|<SHOWTURTLE> {s = "l.dt();";}
+		|<HIDETURTLE> {s = "l.ht();";}
+		|<SHOWTURTLE> {s = "l.st();";}
 		// Statements with one parameter
 		|<FORWARD> param = nExpr() {s = "l.fd("+param+");";}
 		|<BACKWARD> param = nExpr() {s = "l.bk("+param+");";}

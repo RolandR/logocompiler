@@ -176,10 +176,10 @@ s = "l.pd();";
 s = "l.pu();";
       } else if (jj_2_13(2)) {
         jj_consume_token(HIDETURTLE);
-s = "l.et();";
+s = "l.ht();";
       } else if (jj_2_14(2)) {
         jj_consume_token(SHOWTURTLE);
-s = "l.dt();";
+s = "l.st();";
       } else if (jj_2_15(2)) {
         jj_consume_token(FORWARD);
         param = nExpr();
