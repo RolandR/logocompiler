@@ -87,7 +87,7 @@ TOKEN: { <PARAMETER: <PARSEP> <IDENTIFIER> > // removes parameter separator
 void start() throws IOException:
 {
 	Token t;
-	String p;
+	String s;
 }
 {
   // logo programs start with LOGO followed by an identifier
@@ -126,7 +126,7 @@ void start() throws IOException:
      pw.println();
    }
    
-   ( statement() )*
+   (s = statement() {pw.println("logo."+s);})*
    
    // close the method "paint"
    {
@@ -156,23 +156,24 @@ void subroutine():
 	<END>
 }
 
-void statement():
+String statement():
 {
-	
+	String s = "";
+	String param = "";
 }
 {
 	(
 		// Simple Statements
-		 <CLEARSCREEN>
-		|<PENDOWN>
-		|<PENUP>
-		|<HIDETURTLE>
-		|<SHOWTURTLE>
+		 <CLEARSCREEN> {s = "cs();";}
+		|<PENDOWN> {s = "pd();";}
+		|<PENUP> {s = "pu();";}
+		|<HIDETURTLE> {s = "et();";}
+		|<SHOWTURTLE> {s = "dt();";}
 		// Statements with one parameter
-		|<FORWARD> nExpr()
-		|<BACKWARD> nExpr()
-		|<LEFTTURN> nExpr()
-		|<RIGHTTURN> nExpr()
+		|<FORWARD> param = nExpr() {s = "fd("+param+");";}
+		|<BACKWARD> param = nExpr() {s = "bk("+param+");";}
+		|<LEFTTURN> param = nExpr() {s = "rt("+param+");";}
+		|<RIGHTTURN> param = nExpr() {s = "lt("+param+");";}
 		|<WAIT> nExpr()
 		// More complex statements
 		|<REPEAT> nExpr() <LBRA> (statement())* <RBRA>
@@ -180,6 +181,7 @@ void statement():
 		|<IFELSE> bExpr() <LBRA> (statement())* <RBRA> <LBRA> (statement())* <RBRA>
 		|<IDENTIFIER> (nExpr())*
 	)
+	{return s;}
 }
 
 String nExpr():
