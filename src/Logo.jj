@@ -112,7 +112,7 @@ void start() throws IOException:
                " extends java.applet.Applet {\n" );
     numIndent++;
     indent();
-    pw.println("private LogoPrimitives logo;\n");
+    pw.println("private LogoPrimitives l;\n");
   }
   
    ( subroutine() )*
@@ -122,13 +122,13 @@ void start() throws IOException:
      indent(); numIndent++;
      pw.println("public void paint(Graphics g) {");
      indent();
-     pw.println("logo = new LogoPrimitives(this);");
+     pw.println("l = new LogoPrimitives(this);");
      pw.println();
    }
    
    (s = statement() {
 	   indent();
-	   pw.println("logo."+s);
+	   pw.println(s);
 	})*
    
    // close the method "paint"
@@ -163,23 +163,30 @@ String statement():
 {
 	String s = "";
 	String param = "";
+	String statements = "";
+	Token t;
+	String count;
 }
 {
 	(
 		// Simple Statements
-		 <CLEARSCREEN> {s = "cs();";}
-		|<PENDOWN> {s = "pd();";}
-		|<PENUP> {s = "pu();";}
-		|<HIDETURTLE> {s = "et();";}
-		|<SHOWTURTLE> {s = "dt();";}
+		 <CLEARSCREEN> {s = "l.cs();";}
+		|<PENDOWN> {s = "l.pd();";}
+		|<PENUP> {s = "l.pu();";}
+		|<HIDETURTLE> {s = "l.et();";}
+		|<SHOWTURTLE> {s = "l.dt();";}
 		// Statements with one parameter
-		|<FORWARD> param = nExpr() {s = "fd("+param+");";}
-		|<BACKWARD> param = nExpr() {s = "bk("+param+");";}
-		|<LEFTTURN> param = nExpr() {s = "rt("+param+");";}
-		|<RIGHTTURN> param = nExpr() {s = "lt("+param+");";}
-		|<WAIT> nExpr()
+		|<FORWARD> param = nExpr() {s = "l.fd("+param+");";}
+		|<BACKWARD> param = nExpr() {s = "l.bk("+param+");";}
+		|<LEFTTURN> param = nExpr() {s = "l.rt("+param+");";}
+		|<RIGHTTURN> param = nExpr() {s = "l.lt("+param+");";}
+		|<WAIT> param = nExpr() {s = "l.wait("+param+");";}
 		// More complex statements
-		|<REPEAT> nExpr() <LBRA> (statement())* <RBRA>
+		|<REPEAT> count = nExpr() <LBRA> (param = statement() {statements += "\t" + param + "\n";})* <RBRA> {
+				s = "for(int i = 0; i <= ("+count+"); i++){\n";
+				s += statements;
+				s += "}";
+			}
 		|<IF> bExpr() <LBRA> (statement())* <RBRA>
 		|<IFELSE> bExpr() <LBRA> (statement())* <RBRA> <LBRA> (statement())* <RBRA>
 		|<IDENTIFIER> (nExpr())*
@@ -195,7 +202,7 @@ String nExpr():
 {
 	exp = nTerm() ((<ADD> {exp += " + ";} | <SUB> {exp += " - ";}) term = nTerm() {exp += term;})*
 	
-	{return exp + " ";}
+	{return exp;}
 }
 
 String nTerm():
